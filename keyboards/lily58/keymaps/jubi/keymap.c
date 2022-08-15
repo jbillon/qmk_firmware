@@ -7,6 +7,31 @@ enum layer_number {
   _ADJUST,
 };
 
+typedef struct {
+  bool is_press_action;
+  int state;
+} tap;
+
+//Define a type for as many tap dance states as you need
+enum {
+  SINGLE_TAP = 1,
+  SINGLE_HOLD = 2,
+  DOUBLE_TAP = 3
+};
+
+enum {
+  SWITCH_LAYER = 0     //Our custom tap dance key; add any other tap dance keys to this enum 
+};
+
+//Declare the functions to be used with your tap dance key(s)
+
+//Function associated with all tap dances
+int cur_dance (qk_tap_dance_state_t *state);
+
+//Functions associated with individual tap dances
+void ql_finished (qk_tap_dance_state_t *state, void *user_data);
+void ql_reset (qk_tap_dance_state_t *state, void *user_data);
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* QWERTY
@@ -16,10 +41,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  =   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |LShift|   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
- * |------+------+------+------+------+------| RAISE |    |  XXX  |------+------+------+------+------+------|
+ * |------+------+------+------+------+------| BackSP|    |  XXX  |------+------+------+------+------+------|
  * |LCTRL |   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  \   |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |RAISE | LAlt |LGUI  | /Space  /       \Enter \  |RAISE |BackSP|  ESC |
+ *                   |ESC   | LAlt |LGUI  | /Space  /       \Enter \  |RAISE | LEFT |RIGHT |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
@@ -28,51 +53,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,
   KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_EQL,
   KC_LSFT,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,  KC_QUOT,
-  KC_LCTRL,  KC_Z,  KC_X,    KC_C,    KC_V,    KC_B, MO(_RAISE),    KC_NO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_BSLS,
-                       TG(_RAISE), KC_LALT, KC_LGUI, KC_SPC, KC_ENT, MO(_RAISE), KC_BSPC, KC_ESC
+  KC_LCTRL,  KC_Z,  KC_X,    KC_C,    KC_V,    KC_B, KC_BSPC,     KC_NO,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_BSLS,
+                           KC_ESC, KC_LALT, KC_LGUI, KC_SPC,     KC_ENT, TD(SWITCH_LAYER), KC_LEFT, KC_RGHT
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
+ * |      |      |      |      |      | Vup  |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------.    ,-------|      |      |      |      |      |      |
+ * |      |      | Prev |Play/P| Next | Vdo  |-------.    ,-------|      |      |      |      |      |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
+ * |      |      |      |      |      | Mute |-------|    |-------|      |      |      |      |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |RAISE | LAlt |LGUI  | /Space  /       \Enter \  |RAISE |BackSP|  ESC |
+ *                   |ESC   | LAlt |LGUI  | /Space  /       \Enter \  |RAISE | LEFT |RIGHT |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
 [_LOWER] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                             _______, _______, _______, _______, _______, _______, _______, _______
+  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, KC_KB_VOLUME_UP,              _______, _______, _______, _______, _______, _______,
+  _______, _______, KC_MRWD, KC_MPLY, KC_MFFD, KC_KB_VOLUME_DOWN,            _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, KC_KB_MUTE, _______, _______, _______, _______, _______, _______, _______, _______,
+                             _______, _______, _______,    _______, _______, _______, _______, _______
 ),
 /* RAISE
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * |      |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  |      |
+ * | F12  |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |   `  | F11  | F12  |      |      | Vup  |                    | PGUP | HOME |  Up  |  END |   {  |   }  |
+ * |   `  |      |      |      |  {   |  }   |                    | PGUP | HOME |  Up  |  END |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      | Prev |Play/P| Next | Vdo  |-------.    ,-------| PGDO | Left | Down | Right|   [  |   ]  |
- * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |      | CAPS |      |      |      | Mute |-------|    |-------|      |      |      |      |      |      |
+ * |      |      |      |      |  [   |  ]   |-------.    ,-------| PGDO | Left | Down | Right|      |      |
+ * |------+------+------+------+------+------|  DEL  |    |       |------+------+------+------+------+------|
+ * |      | CAPS |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |RAISE | LAlt |LGUI  | /Space  /       \Enter \  |RAISE |  DEL |  ESC |
+ *                   |ESC   | LAlt |LGUI  | /Space  /       \Enter \  |RAISE | LEFT |RIGHT |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
 
 [_RAISE] = LAYOUT(
-  _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, _______,
-  _______,  KC_F11,  KC_F12, _______, _______, KC_KB_VOLUME_UP,              KC_PGUP, KC_HOME,   KC_UP,  KC_END, KC_LCBR, KC_RCBR,
-  _______, _______, KC_MRWD, KC_MPLY, KC_MFFD, KC_KB_VOLUME_DOWN,            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_LBRC, KC_RBRC,
-  _______, KC_CAPS, _______, _______, _______, KC_KB_MUTE, _______, _______, _______, _______, _______, _______, _______, _______,
-                             _______, _______, _______, _______, _______, _______,  KC_DEL, _______
+   KC_F12,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
+  _______, _______, _______, _______, KC_LCBR, KC_RCBR,                   KC_PGUP, KC_HOME,   KC_UP,  KC_END, _______, _______,
+  _______, _______, _______, _______, KC_LBRC, KC_RBRC,                   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+  _______, KC_CAPS, _______, _______, _______, _______,  KC_DEL, _______, _______, _______, _______, _______, _______, _______,
+                             _______, _______, _______, _______, _______, _______, _______, _______
 ),
 /* ADJUST
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -97,9 +122,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
+// No need for the adjust layer for now.
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+// }
 
 //SSD1306 OLED update loop, make sure to enable OLED_ENABLE=yes in rules.mk
 #ifdef OLED_ENABLE
@@ -147,3 +173,63 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+//Determine the current tap dance state
+int cur_dance (qk_tap_dance_state_t *state) {
+  if (state->count == 1) {
+    if (!state->pressed) {
+      return SINGLE_TAP;
+    } else {
+      return SINGLE_HOLD;
+    }
+  } else if (state->count == 2) {
+    return DOUBLE_TAP;
+  }
+  else return 8;
+}
+
+//Initialize tap structure associated with example tap dance key
+static tap ql_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+//Functions that control what our tap dance key does
+void ql_finished (qk_tap_dance_state_t *state, void *user_data) {
+  ql_tap_state.state = cur_dance(state);
+  switch (ql_tap_state.state) {
+    case SINGLE_TAP:
+      if (layer_state_is(_RAISE)) {
+        layer_off(_RAISE);
+      } else {
+        layer_on(_RAISE);
+      }
+      break;
+    case SINGLE_HOLD: 
+      layer_on(_RAISE); 
+      break;
+    case DOUBLE_TAP: 
+      //check to see if the layer is already set
+      if (layer_state_is(_LOWER)) {
+        //if already set, then switch it off
+        layer_off(_LOWER);
+      } else { 
+        //if not already set, then switch the layer on
+        layer_on(_LOWER);
+      }
+      break;
+  }
+}
+
+void ql_reset (qk_tap_dance_state_t *state, void *user_data) {
+  //if the key was held down and now is released then switch off the layer
+  if (ql_tap_state.state==SINGLE_HOLD) {
+    layer_off(_RAISE);
+  }
+  ql_tap_state.state = 0;
+}
+
+//Associate our tap dance key with its functionality
+qk_tap_dance_action_t tap_dance_actions[] = {
+  [SWITCH_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, ql_finished, ql_reset, 250)
+};
