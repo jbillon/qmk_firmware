@@ -7,12 +7,6 @@ enum layer_number {
   _ADJUST,
 };
 
-//custom tap dance keys; add any other tap dance keys to this enum 
-enum {
-  TD_OPEN = 0,
-  TD_CLOSE,
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* QWERTY
@@ -22,20 +16,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  =   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |LShift|   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
- * |------+------+------+------+------+------| ( { [ |    | ) } ] |------+------+------+------+------+------|
+ * |------+------+------+------+------+------|BackSP |    | ENTER |------+------+------+------+------+------|
  * |LCTRL |   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  \   |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |ESC   | LAlt |LGUI  | /Space  /       \RAISE \  |ENTER |BackSP| Del  |
+ *                   |BackSP| LAlt | LGUI | /Space  /       \RAISE \  | RGUI |Raise | Del  |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
 
  [_QWERTY] = LAYOUT(
-  KC_GRV,      KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                                KC_6,    KC_7,   KC_8,    KC_9,    KC_0,     KC_MINS,
-  KC_TAB,      KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                                KC_Y,    KC_U,   KC_I,    KC_O,    KC_P,     KC_EQL,
-  KC_LSFT,     KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                                KC_H,    KC_J,   KC_K,    KC_L,    KC_SCLN,  KC_QUOT,
-  KC_LCTRL,    KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, TD(TD_OPEN),   TD(TD_CLOSE),   KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH,  KC_BSLS,
-                              KC_ESC, KC_LALT, KC_LGUI,      KC_SPC,     TT(_RAISE), KC_ENT, KC_BSPC,   KC_DEL
+  KC_GRV,      KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,       KC_8,    KC_9,    KC_0,     KC_MINS,
+  KC_TAB,      KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,       KC_I,    KC_O,    KC_P,     KC_EQL,
+  KC_LSFT,     KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,       KC_K,    KC_L,    KC_SCLN,  KC_QUOT,
+  KC_LCTRL,    KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_BSPC,       KC_ENT, KC_N,    KC_M,       KC_COMM, KC_DOT,  KC_SLSH,  KC_BSLS,
+                             KC_BSPC, KC_LALT, KC_LGUI,   KC_SPC,   MO(_RAISE), KC_RGUI, TG(_RAISE), KC_DEL
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -47,7 +41,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
  * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |ESC   | LAlt |LGUI  | /Space  /       \RAISE \  |ENTER |BackSP| Del  |
+ *                   |      |      |      | /       /       \      \  |      |      |      |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
@@ -60,25 +54,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* RAISE
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * | F12  |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
+ * | ESC  |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      | FastF| Vup  |      |      |      |                    | PGUP | HOME |  Up  |  END |      |      |
+ * |      | FastF| Vup  |      |  (   |  )   |                    | PGUP | HOME |  Up  |  END |      | F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | CAPS | Play | VDown|      |      |      |-------.    ,-------| PGDO | Left | Down | Right|      |      |
- * |------+------+------+------+------+------| ) } ] |    |       |------+------+------+------+------+------|
- * |      | Rwd  | Mute |      |      |      |-------|    |-------|      |      |      |      |      |      |
+ * |      | Play | VDown|      |  {   |  }   |-------.    ,-------| PGDO | Left | Down | Right|      |      |
+ * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
+ * |      | Rwd  | Mute |      |  [   |  ]   |-------|    |-------|      |      |      |      |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |ESC   | LAlt |LGUI  | /Space  /       \RAISE \  |ENTER |BackSP| Del  |
+ *                   |      |      |      | /       /       \      \  |      |      |      |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
 
 [_RAISE] = LAYOUT(
-   KC_F12,   KC_F1,             KC_F2,   KC_F3,   KC_F4,   KC_F5,                             KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
-  _______, KC_MFFD,   KC_KB_VOLUME_UP, _______, _______, _______,                           KC_PGUP, KC_HOME,   KC_UP,  KC_END, _______, _______,
-  _______, KC_MPLY, KC_KB_VOLUME_DOWN, _______, _______, _______,                           KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
-  _______, KC_MRWD,        KC_KB_MUTE, _______, _______, _______, TD(TD_CLOSE),    _______, _______, _______, _______, _______, _______, _______,
-                                       _______, _______, _______,      _______,    _______, _______, _______, _______
+   KC_ESC,   KC_F1,             KC_F2,   KC_F3,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
+  _______, KC_MFFD,   KC_KB_VOLUME_UP, _______, KC_LPRN, KC_RPRN,                      KC_PGUP, KC_HOME,   KC_UP,  KC_END, _______,  KC_F12,
+  _______, KC_MPLY, KC_KB_VOLUME_DOWN, _______, KC_LCBR, KC_RCBR,                      KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+  _______, KC_MRWD,        KC_KB_MUTE, _______, KC_LBRC, KC_RBRC, _______,    _______, _______, _______, _______, _______, _______, _______,
+                                       _______, _______, _______, _______,    _______, _______, _______, _______
 ),
 /* ADJUST
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -154,83 +148,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
-
-// Tap dance for ( -> { -> [
-void dance_open_finished (qk_tap_dance_state_t *state, void *user_data) {
-  switch (state->count) {
-    case 1:
-      register_code (KC_LSFT);
-      register_code (KC_9);
-      break;
-    case 2:
-      register_code (KC_LSFT);
-      register_code (KC_LBRC);
-      break;
-    case 3:
-      register_code (KC_LBRC);
-      break;
-    default:
-      break;
-  }
-}
-
-void dance_open_reset (qk_tap_dance_state_t *state, void *user_data) {
-  switch (state->count) {
-    case 1:
-      unregister_code(KC_LSFT);
-      unregister_code(KC_9);
-      break;
-    case 2:
-      unregister_code(KC_LSFT);
-      unregister_code(KC_LBRC);
-      break;
-    case 3:
-      unregister_code(KC_LBRC);
-      break;
-    default:
-      break;
-  }
-}
-
-// Tap dance for ) -> } -> ]
-void dance_close_finished (qk_tap_dance_state_t *state, void *user_data) {
-  switch (state->count) {
-    case 1:
-      register_code(KC_LSFT);
-      register_code(KC_0);
-      break;
-    case 2:
-      register_code(KC_LSFT);
-      register_code(KC_RBRC);
-      break;
-    case 3:
-      register_code(KC_RBRC);
-      break;
-    default:
-      break;
-  }
-}
-
-void dance_close_reset (qk_tap_dance_state_t *state, void *user_data) {
-  switch (state->count) {
-    case 1:
-      unregister_code(KC_LSFT);
-      unregister_code(KC_0);
-      break;
-    case 2:
-      unregister_code(KC_LSFT);
-      unregister_code(KC_RBRC);
-      break;
-    case 3:
-      unregister_code(KC_RBRC);
-      break;
-    default:
-      break;
-  }
-}
-
-//All tap dance functions would go here. Only showing this one.
-qk_tap_dance_action_t tap_dance_actions[] = {
- [TD_OPEN] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_open_finished, dance_open_reset),
- [TD_CLOSE] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_close_finished, dance_close_reset)
-};
