@@ -28,7 +28,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define TAPPING_TERM 180
 #define TAPPING_TOGGLE 3
-#define IGNORE_MOD_TAP_INTERRUPT
+// #define IGNORE_MOD_TAP_INTERRUPT
+#define PERMISSIVE_HOLD
 
 #undef RGBLED_NUM
 #define RGBLIGHT_ANIMATIONS

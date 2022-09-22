@@ -7,6 +7,14 @@ enum layer_number {
   _ADJUST,
 };
 
+enum custom_keycodes {
+  BEGLINE = SAFE_RANGE,
+  ENDLINE,
+  EAIGUE,
+  EGRAVE,
+  AGRAVE
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* QWERTY
@@ -15,21 +23,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  =   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |LShift|   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
+ * | LSFT |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
  * |------+------+------+------+------+------| BackSP|    | ENTER |------+------+------+------+------+------|
  * |LCTRL |   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  \   |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   | ENTER| LAlt | LGUI | /Space  /       \RAISE \  | RGUI |LOWER | Del  |
+ *                   | ENTER| LAlt | LGUI | /Space  /       \RAISE \  | RSFT |LOWER | RGUI |
  *                   |      |      |      |/ Raise /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
 
  [_QWERTY] = LAYOUT(
-  KC_GRV,        KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                                    KC_6,            KC_7,  KC_8,     KC_9,    KC_0,     KC_MINS,
-  KC_TAB,        KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                                    KC_Y,            KC_U,  KC_I,     KC_O,    KC_P,     KC_EQL,
-  SFT_T(KC_ESC), KC_A,   KC_S,    KC_D,    KC_F,    LT(_LOWER,KC_G),                         LT(_LOWER,KC_H), KC_J,  KC_K,     KC_L,    KC_SCLN,  KC_QUOT,
-  KC_LCTRL,      KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_BSPC,                  KC_ENT, KC_N,            KC_M,  KC_COMM,  KC_DOT,  KC_SLSH,  KC_BSLS,
-                                KC_ENT, KC_LALT, KC_LGUI,  LT(_RAISE, KC_SPC),   TT(_RAISE), KC_RGUI,   TT(_LOWER),  KC_DEL
+  KC_GRV,      KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                                    KC_6,    KC_7,       KC_8,     KC_9,    KC_0,     KC_MINS,
+  KC_TAB,      KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                                    KC_Y,    KC_U,       KC_I,     KC_O,    KC_P,     KC_EQL,
+  KC_LSFT,     KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                                    KC_H,    KC_J,       KC_K,     KC_L,    KC_SCLN,  KC_QUOT,
+  KC_LCTRL,    KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_BSPC,                  KC_ENT, KC_N,    KC_M,       KC_COMM,  KC_DOT,  KC_SLSH,  KC_BSLS,
+                              KC_ENT, KC_LALT, KC_LGUI,  LT(_RAISE, KC_SPC),   TT(_RAISE), KC_RSFT, TT(_LOWER), KC_RGUI
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -39,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |      |      | Vdwn | Mute |  Vup |      |-------.    ,-------|      |      |      |      |      |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |      |      | Rwnd | Play | FstF |      |-------|    |-------|      |      |      |      |      |      |
+ * |      |      | Rwnd | Play | FstF |      |-------|    |-------|      |      |      |DT_PRT|DT_DWN| DT_UP|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *                   |      |      |      | /       /       \      \  |      |      |      |
  *                   |      |      |      |/       /         \      \ |      |      |      |
@@ -54,13 +62,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* RAISE
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * | ESC  |   !  |   @  |   #  |   $  |   %  |                    |   ^  |   &  |   *  |   (  |   )  |   _  |
+ * |      |   !  |   ?  |   #  |   *  |  "   |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |   :  |   _  |   -  |  (   |  )   |                    | PGUP | HOME |  Up  |  END |      |   +  |
+ * | ESC  |   :  |   &  |   |  |  (   |  )   |                    |   è  | BLINE|  Up  | ELINE| PGUP | HOME |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |   `  |   &  |   =  |  {   |  }   |-------.    ,-------| PGDO | Left | Down | Right|   :  |   "  |
+ * |      |   +  |   =  |   -  |  {   |  }   |-------.    ,-------|   é  | Left | Down | Right| PGDO | END  |
  * |------+------+------+------+------+------|  Del  |    |       |------+------+------+------+------+------|
- * |      |      |   |  |   +  |  [   |  ]   |-------|    |-------|      |      |   <  |   >  |   ?  |   |  |
+ * |      |   _  |   <  |   >  |  [   |  ]   |-------|    |-------|   à  |      |      |      |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *                   |      |      |      | / Space /       \      \  |      |      |      |
  *                   |      |      |      |/       /         \      \ |      |      |      |
@@ -68,10 +76,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_RAISE] = LAYOUT(
-   KC_ESC, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_UNDS,
-  _______, KC_COLN, KC_UNDS, KC_MINS, KC_LPRN, KC_RPRN,                      KC_PGUP, KC_HOME,   KC_UP,  KC_END, _______, KC_PLUS,
-  _______,  KC_GRV, KC_AMPR,  KC_EQL, KC_LCBR, KC_RCBR,                      KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_COLN, KC_DQT,
-  _______, _______, KC_PIPE, KC_PLUS, KC_LBRC, KC_RBRC,  KC_DEL,    _______, _______, _______, KC_LABK, KC_RABK, KC_QUES, KC_PIPE,
+  _______, KC_EXLM, KC_QUES, KC_HASH, KC_ASTR,  KC_DQT,                      _______, _______, _______, _______, _______, _______,
+   KC_ESC, KC_COLN, KC_AMPR, KC_PIPE, KC_LPRN, KC_RPRN,                       EGRAVE, BEGLINE,   KC_UP, ENDLINE, KC_PGUP, KC_HOME,
+  _______, KC_PLUS,  KC_EQL, KC_MINS, KC_LCBR, KC_RCBR,                       EAIGUE, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN,  KC_END,
+  _______, KC_UNDS, KC_LABK, KC_RABK, KC_LBRC, KC_RBRC,  KC_DEL,    _______,  AGRAVE, _______, _______, _______, _______, _______,
                              _______, _______, _______,  KC_SPC,    _______, _______, _______, _______
 ),
 /* ADJUST
@@ -139,12 +147,33 @@ bool oled_task_user(void) {
 }
 #endif // OLED_ENABLE
 
-// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-//   if (record->event.pressed) {
-// #ifdef OLED_ENABLE
-//     set_keylog(keycode, record);
-// #endif
-//     // set_timelog();
-//   }
-//   return true;
-// }
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case BEGLINE:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LGUI(SS_TAP(X_LEFT)));
+      }
+      return false;
+    case ENDLINE:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LGUI(SS_TAP(X_RGHT)));
+      }
+      return false;
+    case EAIGUE:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LALT("e") "e");
+      }
+      return false;
+    case EGRAVE:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LALT("`") "e");
+      }
+      return false;
+    case AGRAVE:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LALT("`") "a");
+      }
+      return false;
+  }
+  return true;
+}
